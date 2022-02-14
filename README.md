@@ -7,8 +7,6 @@ git clone git@github.com:Alvis1337/miditerpriter-frontend.git
 npm install
 ```
 
-**Having issues installing? See our [debugging guide](https://github.com/electron-react-boilerplate/electron-react-boilerplate/issues/400)**
-
 ## Starting Development
 
 Start the app in the `dev` environment:
