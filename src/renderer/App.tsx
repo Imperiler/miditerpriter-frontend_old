@@ -1,39 +1,70 @@
 import { MemoryRouter as Router, Routes, Route } from 'react-router-dom';
-import icon from '../../assets/icon.svg';
 import './App.css';
+import { useState } from 'react';
+import { Button, Form } from 'react-bootstrap';
 
 const Hello = () => {
+  const [file, uploadFile] = useState('');
+
+  const sendFile = async (input) => {
+    console.log(input);
+    await fetch('http://127.0.0.1:8000').then((res) => console.log(res));
+  };
+
   return (
-    <div>
-      <div className="Hello">
-        <img width="200px" alt="icon" src={icon} />
-      </div>
-      <h1>electron-react-boilerplate</h1>
-      <div className="Hello">
+    <div className="Hello">
+      <div className="main-div">
+        <h2>Miditerpreter</h2>
         <a
-          href="https://electron-react-boilerplate.js.org/"
-          target="_blank"
-          rel="noreferrer"
+          className="github-button"
+          href="https://github.com/mitchellkennedy"
+          data-color-scheme="no-preference: dark; light: dark; dark: dark;"
+          data-size="large"
+          aria-label="Follow @mitchellkennedy on GitHub"
         >
-          <button type="button">
-            <span role="img" aria-label="books">
-              📚
-            </span>
-            Read our docs
-          </button>
+          Follow @mitchellkennedy
         </a>
         <a
-          href="https://github.com/sponsors/electron-react-boilerplate"
-          target="_blank"
-          rel="noreferrer"
+          className="github-button"
+          href="https://github.com/Alvis1337"
+          data-color-scheme="no-preference: dark; light: dark; dark: dark;"
+          data-size="large"
+          aria-label="Follow @Alvis1337 on GitHub"
         >
-          <button type="button">
-            <span role="img" aria-label="books">
-              🙏
-            </span>
-            Donate
-          </button>
+          Follow @Alvis1337
         </a>
+        <a
+          className="github-button"
+          href="https://github.com/mitchellkennedy/miditerpreter"
+          data-color-scheme="no-preference: dark; light: dark; dark: dark;"
+          data-icon="octicon-star"
+          data-size="large"
+          aria-label="Star mitchellkennedy/miditerpreter on GitHub"
+        >
+          Star
+        </a>
+        <div className="file-upload-form">
+          <div className="file-upload-button">
+            <Form.Control
+              className="file-input-button"
+              type="file"
+              onChange={(event) => {
+                event.preventDefault();
+                uploadFile(event.target.files[0]);
+              }}
+            />
+          </div>
+
+          <Button
+            className="file-upload-button"
+            onClick={(event) => {
+              event.preventDefault();
+              sendFile(file);
+            }}
+          >
+            Upload!
+          </Button>
+        </div>
       </div>
     </div>
   );

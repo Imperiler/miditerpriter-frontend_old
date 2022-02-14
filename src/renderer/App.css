@@ -60,3 +60,71 @@ a:hover {
   align-items: center;
   margin: 20px 0;
 }
+
+.main-div {
+  display: flex;
+  flex-direction: column;
+  justify-items: center;
+  align-content: center;
+  align-items: center;
+}
+
+.file-upload-form {
+  display: flex;
+  flex-direction: row;
+  padding: 2rem;
+  margin: 2rem;
+}
+
+.file-upload-button {
+  margin: 1rem;
+  background-color: black;
+  border-color: black;
+}
+
+.file-upload-button:hover {
+  margin: 1rem;
+  background-color: black;
+  border-color: black;
+}
+
+.form-control:not(active) {
+  color: black;
+  background-color: black;
+  border-color: black;
+  color: white;
+}
+
+.form-control:focus {
+  color: black;
+  background-color: black;
+  border-color: black;
+  color: white;
+  color: #212529;
+  background-color: #e9ecef;
+}
+
+.form-control::-webkit-file-upload-button {
+  color: white;
+  background-color: black;
+}
+
+.form-control::-webkit-file-upload-button:focus {
+  color: white;
+  background-color: black;
+}
+
+.form-control::file-selector-button {
+  color: white;
+  background-color: black;
+}
+
+.form-control::file-selector-button:focus {
+  color: white;
+  background-color: black;
+}
+
+.form-control:hover:not(:disabled):not([readonly])::-webkit-file-upload-button {
+  color: white;
+  background-color: black;
+}
