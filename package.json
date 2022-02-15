@@ -3,7 +3,7 @@
   "description": "A foundation for scalable desktop apps",
   "scripts": {
     "build": "concurrently \"npm run build:main\" \"npm run build:renderer\"",
-    "build:main": "cross-env NODE_ENV=production TS_NODE_TRANSPILE_ONLY=true webpack --config ./.erb/configs/webpack.config.main.prod.ts",
+    "build:main": "cross-env NODE_NV=production TS_NODE_TRANSPILE_ONLY=true webpack --config ./.erb/configs/webpack.config.main.prod.ts",
     "build:renderer": "cross-env NODE_ENV=production TS_NODE_TRANSPILE_ONLY=true webpack --config ./.erb/configs/webpack.config.renderer.prod.ts",
     "rebuild": "electron-rebuild --parallel --types prod,dev,optional --module-dir release/app",
     "lint": "cross-env NODE_ENV=development eslint . --ext .js,.jsx,.ts,.tsx",
@@ -232,11 +232,14 @@
   "dependencies": {
     "electron-debug": "^3.2.0",
     "electron-log": "^4.4.4",
+    "electron-store": "^8.0.1",
     "electron-updater": "^4.6.5",
+    "enhanced-resolve": "^5.9.0",
     "history": "^5.2.0",
     "react": "^17.0.2",
     "react-bootstrap": "^2.1.2",
     "react-dom": "^17.0.2",
+    "react-hot-toast": "^2.2.0",
     "react-router-dom": "^6.2.1"
   },
   "devEngines": {
@@ -245,6 +248,9 @@
   },
   "collective": {
     "url": "https://opencollective.com/electron-react-boilerplate-594"
+  },
+  "browser": {
+    "child_process": true
   },
   "browserslist": [],
   "prettier": {

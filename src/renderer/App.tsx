@@ -2,15 +2,29 @@ import { MemoryRouter as Router, Routes, Route } from 'react-router-dom';
 import './App.css';
 import { useState } from 'react';
 import { Button, Form } from 'react-bootstrap';
+import toast, { Toaster } from 'react-hot-toast';
+
+declare global {
+  interface Window {
+    electron: {
+      store: {
+        get: (key: string) => string;
+        set: (key: string, val: string) => void;
+      };
+    };
+  }
+}
 
 const Hello = () => {
   const [file, uploadFile] = useState('');
 
-  const sendFile = async (input) => {
-    console.log(input);
-    await fetch('http://127.0.0.1:8000').then((res) => console.log(res));
+  const notify = () => {
+    if (window.electron.store.get('fileUploadStatus')) {
+      toast(`File was converted, look in ${file}`);
+    } else {
+      toast('There was some sort of error.');
+    }
   };
-
   return (
     <div className="Hello">
       <div className="main-div">
@@ -50,20 +64,26 @@ const Hello = () => {
               type="file"
               onChange={(event) => {
                 event.preventDefault();
-                uploadFile(event.target.files[0]);
+                // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                // @ts-ignore
+                uploadFile(event.target.files[0].path);
               }}
             />
           </div>
-
           <Button
             className="file-upload-button"
             onClick={(event) => {
               event.preventDefault();
-              sendFile(file);
+              window.electron.store.set('filePath', '');
+              window.electron.store.set('filePath', file);
+              notify();
+              // eslint-disable-next-line no-console
+              console.log(file);
             }}
           >
             Upload!
           </Button>
+          <Toaster />
         </div>
       </div>
     </div>

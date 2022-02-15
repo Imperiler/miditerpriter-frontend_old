@@ -8,12 +8,23 @@
  * When running `npm run build` or `npm run build:main`, this file is compiled to
  * `./src/main.js` using webpack. This gives us some performance wins.
  */
+
 import path from 'path';
 import { app, BrowserWindow, shell, ipcMain } from 'electron';
 import { autoUpdater } from 'electron-updater';
 import log from 'electron-log';
+import Store from 'electron-store';
 import MenuBuilder from './menu';
 import { resolveHtmlPath } from './util';
+
+const store = new Store();
+
+ipcMain.on('electron-store-get', async (event, val) => {
+  event.returnValue = store.get(val);
+});
+ipcMain.on('electron-store-set', async (_event, key, val) => {
+  store.set(key, val);
+});
 
 export default class AppUpdater {
   constructor() {
@@ -30,6 +41,26 @@ ipcMain.on('ipc-example', async (event, arg) => {
   console.log(msgTemplate(arg));
   event.reply('ipc-example', msgTemplate('pong'));
 });
+
+export const letsGo = (filePath: string) => {
+  ipcMain.on('ipc-example', async () => {
+    const child = require('child_process').exec;
+    const executablePath = `miditerpreter.exe -action=copy -file_in="${filePath}" -file_out="${`${filePath}.output.mid`}"`;
+    try {
+      child(
+        executablePath,
+        // eslint-disable-next-line func-names
+        function (err: never, data: never) {
+          console.log(err, data);
+          store.set('fileUploadStatus', true);
+        }
+      );
+    } catch (e) {
+      console.log(e);
+      store.set('fileUploadStatus', false);
+    }
+  });
+};
 
 if (process.env.NODE_ENV === 'production') {
   const sourceMapSupport = require('source-map-support');
@@ -76,6 +107,8 @@ const createWindow = async () => {
     icon: getAssetPath('icon.png'),
     webPreferences: {
       preload: path.join(__dirname, 'preload.js'),
+      contextIsolation: true,
+      nodeIntegration: true,
     },
   });
 
@@ -125,6 +158,10 @@ app.on('window-all-closed', () => {
 app
   .whenReady()
   .then(() => {
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
+    letsGo(store.get('filePath'));
+
     createWindow();
     app.on('activate', () => {
       // On macOS it's common to re-create a window in the app when the
